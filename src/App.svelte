@@ -1,4 +1,8 @@
-<h1>hello world</h1>
+<svelte:head>
+  <script src="./build/elements/textarea.wc.js"></script>
+</svelte:head>
+
+<tf-textarea classes="is-primary" placeholder="hello world" />
 
 <!-- <script lang="ts">
   import globalStore from "./store/global.store";
