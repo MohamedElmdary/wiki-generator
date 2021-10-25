@@ -45,77 +45,88 @@
   }
 </script>
 
+<div style="position: fixed;">
+  {JSON.stringify(data)}
+</div>
+
 {#if _theme === "bulma"}
-  <h4 class="is-size-4">Deploy a Kubernetes</h4>
-  <form on:submit|preventDefault={onDeployHandler}>
-    {#each kubernetesFields as field (field.symbol)}
-      <div class="field">
-        <label class="label" for={`${field.symbol}-${ID}`}>
-          {field.label}
-        </label>
-        <div class="control">
-          {#if !field.textarea}
-            <input
-              id={`${field.symbol}-${ID}`}
-              class="input"
-              type="text"
-              placeholder={field.placeholder}
-              bind:value={data[field.symbol]}
-            />
-          {:else}
-            <textarea
-              class="textarea"
-              placeholder={field.placeholder}
-              bind:value={data[field.symbol]}
-            />
-          {/if}
+  <form on:submit|preventDefault={onDeployHandler} class="box">
+    <h4 class="is-size-4">Deploy a Kubernetes</h4>
+    <br />
+
+    <div class="box">
+      {#each kubernetesFields as field (field.symbol)}
+        <div class="field">
+          <label class="label" for={`${field.symbol}-${ID}`}>
+            {field.label}
+          </label>
+          <div class="control">
+            {#if !field.textarea}
+              <input
+                id={`${field.symbol}-${ID}`}
+                class="input"
+                type="text"
+                placeholder={field.placeholder}
+                bind:value={data[field.symbol]}
+              />
+            {:else}
+              <textarea
+                class="textarea"
+                placeholder={field.placeholder}
+                bind:value={data[field.symbol]}
+              />
+            {/if}
+          </div>
         </div>
-      </div>
-    {/each}
+      {/each}
+    </div>
 
     {#each data.workers as worker, wIdx}
-      {#each baseFields as field}
-        <div class="field">
-          {#if field.type === "checkbox"}
-            <label class="checkbox" for={`${field.symbol}-${ID}`}>
-              <input type="checkbox" id={`${field.symbol}-${ID}`} />
-              {field.label}
-            </label>
-          {:else if field.type === "number"}
+      <div class="box">
+        {#each baseFields as field}
+          <div class="field">
             <label class="label" for={`${field.symbol}-${ID}`}>
               {field.label}
             </label>
-            <div class="control">
-              <input
-                id={`${field.symbol}-${ID}`}
-                class="number"
-                type="text"
-                placeholder={field.placeholder}
-              />
-              <!-- bind:value={data[field.symbol]} -->
-            </div>
-          {/if}
-
-          <!-- <label class="label" for={`${field.symbol}-${ID}`}>
-          {field.label}
-        </label>
-
-        <div class="control">
-          {#if field.type === "checkbox"}
-            checkbox
-
+            {#if field.type === "checkbox"}
+              <label class="checkbox" for={`${field.symbol}-${ID}`}>
+                <input
+                  type="checkbox"
+                  value={data.workers[wIdx][field.symbol]}
+                  on:change={() => {
+                    console.log(wIdx, data.workers[wIdx]);
+                    data.workers[wIdx][field.symbol] =
+                      !data.workers[wIdx][field.symbol];
+                  }}
+                  id={`${field.symbol}-${ID}`}
+                />
+                {field.label}
+              </label>
+            {:else if field.type === "number"}
+              <div class="control">
+                <input
+                  id={`${field.symbol}-${ID}`}
+                  class="input"
+                  type="number"
+                  placeholder={field.placeholder}
+                  bind:value={data.workers[wIdx][field.symbol]}
+                />
+              </div>
             {:else}
-            <input
-              id={`${field.symbol}-${ID}`}
-              class="input"
-              type="text"
-              placeholder={field.placeholder}
-              bind:value={data[field.symbol]}
-            />
-          {/if}
-        </div> -->
-        </div>
-      {/each}
+              <div class="control">
+                <input
+                  id={`${field.symbol}-${ID}`}
+                  class="input"
+                  type="text"
+                  placeholder={field.placeholder}
+                  bind:value={data.workers[wIdx][field.symbol]}
+                />
+                <!-- bind:value={data[field.symbol]} -->
+              </div>
+            {/if}
+          </div>
+        {/each}
+      </div>
     {/each}
 
     <div class="actions">
