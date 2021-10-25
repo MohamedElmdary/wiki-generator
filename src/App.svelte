@@ -1,16 +1,33 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import markdownParser from "./utils/markdownParser";
+  import type { ISidenavRoute } from "./types";
 
-  onMount(() => {
-    fetch(
-      "https://raw.githubusercontent.com/threefoldfoundation/info_threefold_pub/main/wiki/qss/product/qss_algorithm.md"
-    )
-      .then((res) => res.text())
-      .then((md) => {
-        console.log(md);
-
-        console.log(markdownParser(md));
-      });
-  });
+  const routes: ISidenavRoute[] = [
+    {
+      label: "General",
+      children: [
+        { label: "dashboard", to: "/dashboard0", path: "/pages/dashboard" },
+        { label: "dashboard 2", to: "/dashboard1", path: "/pages/dashboard" },
+      ],
+    },
+    {
+      label: "General",
+      children: [
+        { label: "dashboard", to: "/dashboard2", path: "/pages/dashboard" },
+        { label: "dashboard 2", to: "/dashboard3", path: "/pages/dashboard" },
+      ],
+    },
+    {
+      label: "General",
+      children: [
+        { label: "dashboard", to: "/dashboard4", path: "/pages/dashboard" },
+        { label: "dashboard 2", to: "/dashboard5", path: "/pages/dashboard" },
+      ],
+    },
+  ];
 </script>
+
+<svelte:head>
+  <script src="./build/elements/sidenav.wc.js"></script>
+</svelte:head>
+
+<tf-sidenav routes={JSON.stringify(routes)} />

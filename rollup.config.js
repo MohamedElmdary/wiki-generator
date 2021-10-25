@@ -38,13 +38,15 @@ function serve() {
  * 	src: string,
  * 	outdir: string,
  * 	css?: boolean,
- * 	element?: boolean
+ * 	element?: boolean,
+ * 	keepCss?: boolean
  * } } options 
  */
 function build(options) {
 	options = {
 		css: true,
 		element: false,
+		keepCss: false,
 		...options
 	};
 
@@ -61,7 +63,19 @@ function build(options) {
 				preprocess: sveltePreprocess({ sourceMap: !production }),
 				compilerOptions: {
 					dev: !production,
-					customElement: options.element
+					customElement: options.element,
+				},
+				onwarn(warning, handler) {
+					// const { code } = warning;
+					// console.log(options.keepCss, code);
+					// if (options.keepCss && code === "css-unused-selector")
+					// 	return;
+					// handler(warning);
+					const { code, frame } = warning;
+					if (code === "css-unused-selector")
+						return;
+
+					handler(warning);
 				}
 			}),
 			// css({ output: 'bundle.css' }),
@@ -97,10 +111,11 @@ function buildElements() {
 	.map(f => {
 		const name = f.replace(".wc.svelte", "").toLocaleLowerCase();
 		return build({
-			src: `src/elements/${f}`,
+			src: `src/elements/${f}/index.js`,
 			outdir: outDir + `${name}.wc.js`,
 			css: false,
-			element: true
+			element: true,
+			keepCss: true
 		});
 	});
 }
