@@ -1,0 +1,3 @@
+title: $title
+theme: bulma
+sidenav: /markdown/configs/sidenav.yaml
