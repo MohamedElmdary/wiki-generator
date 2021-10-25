@@ -123,10 +123,12 @@ function buildElements() {
 
 const configs = process.env.DOCS ? [
 	build({ outdir: 'docs/build/bundle.js', src: 'src/main.ts', css: true, element: false }),
-	...buildElements()
 ] : [
 	build({ outdir: 'public/build/bundle.js', src: 'src/main.ts', css: true, element: false }),
-	...buildElements()
 ];
+
+if (production) {
+	configs.push(...buildElements());
+}
 
 export default configs;
