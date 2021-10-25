@@ -1,3 +1,5 @@
+<svelte:options tag={null} />
+
 <script lang="ts">
   import type { ISidenavRoute, IGlobalOptions } from "../../types";
   import resolveTheme from "../../utils/resolveTheme";
@@ -8,7 +10,7 @@
   let _routes: ISidenavRoute[];
   let _theme: IGlobalOptions["theme"];
   $: {
-    _routes = JSON.parse(routes);
+    _routes = routes ? JSON.parse(routes) : [];
     _theme = resolveTheme(theme);
   }
 
