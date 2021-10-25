@@ -1,33 +1,15 @@
 <script lang="ts">
-  import type { ISidenavRoute } from "./types";
+  import { onMount } from "svelte";
+  import loadFile from "./utils/loadFile";
 
-  const routes: ISidenavRoute[] = [
-    {
-      label: "General",
-      children: [
-        { label: "dashboard", to: "/dashboard0", path: "/pages/dashboard" },
-        { label: "dashboard 2", to: "/dashboard1", path: "/pages/dashboard" },
-      ],
-    },
-    {
-      label: "General",
-      children: [
-        { label: "dashboard", to: "/dashboard2", path: "/pages/dashboard" },
-        { label: "dashboard 2", to: "/dashboard3", path: "/pages/dashboard" },
-      ],
-    },
-    {
-      label: "General",
-      children: [
-        { label: "dashboard", to: "/dashboard4", path: "/pages/dashboard" },
-        { label: "dashboard 2", to: "/dashboard5", path: "/pages/dashboard" },
-      ],
-    },
-  ];
+  onMount(async () => {
+    const sidenav = await loadFile("/markdown/pages/sidenav.md");
+    console.log(sidenav);
+  });
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
   <script src="./build/elements/sidenav.wc.js"></script>
 </svelte:head>
 
-<tf-sidenav routes={JSON.stringify(routes)} />
+<tf-sidenav routes={JSON.stringify(routes)} /> -->

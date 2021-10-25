@@ -1,0 +1,8 @@
+- label: MAIN CONFIGS
+  children:
+    - label: Configs
+      to: /configs
+      path: /markdown/pages/configs.md
+    - label: Sidenav
+      to: /sidenav
+      path: /markdown/pages/sidenav.md
