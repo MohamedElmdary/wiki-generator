@@ -111,7 +111,7 @@ function buildElements() {
 	.map(f => {
 		const name = f.replace(".wc.svelte", "").toLocaleLowerCase();
 		return build({
-			src: `src/elements/${f}/index.js`,
+			src: `src/elements/${f}/index.ts`,
 			outdir: outDir + `${name}.wc.js`,
 			css: false,
 			element: true,
