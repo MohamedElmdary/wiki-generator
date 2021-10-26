@@ -1,7 +1,9 @@
-class Worker {
+import { v4 } from "uuid";
+
+abstract class Base {
   public constructor(
-    public id: number = new Date().getTime(),
-    public name: string = "",
+    public id = v4(),
+    public name: string = `Worker ${id}`,
     public node: number = 0,
     public cpu: number = 0,
     public diskSize: number = 0,
@@ -12,24 +14,17 @@ class Worker {
   ) {}
 }
 
+export class Master extends Base {}
+export class Worker extends Base {}
+
 export default class Kubernetes {
   public constructor(
-    /**
-     * @INFO instead of adding master
-     * we assume that 1st not in workers is the master
-     * and 2nd one is a permenant worker
-     */
-    public workers: Worker[] = [
-      new Kubernetes.Worker(),
-      new Kubernetes.Worker(),
-    ],
+    public id = v4(),
+    public master = new Master(),
+    public workers = [new Worker()],
     public secret: string = "",
     public sshKey: string = "",
     public metadata: string = "",
     public description: string = ""
   ) {}
-
-  public static get Worker() {
-    return Worker;
-  }
 }

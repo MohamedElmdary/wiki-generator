@@ -3,7 +3,7 @@
 <script lang="ts">
   import type { IGlobalOptions } from "../../types";
   import resolveTheme from "../../utils/resolveTheme";
-  import Kubernetes from "../../types/kubernetes";
+  import Kubernetes, { Worker } from "../../types/kubernetes";
 
   export let theme: IGlobalOptions["theme"];
   $: _theme = resolveTheme(theme);
@@ -17,8 +17,6 @@
     textarea?: boolean;
     type?: "text" | "number" | "checkbox";
   }
-
-  const ID = new Date().getTime();
 
   // prettier-ignore
   const kubernetesFields: IFormField[] = [
@@ -40,6 +38,13 @@
     { label: "Plantery", symbol: "plantery", placeholder: "", type: 'checkbox' },
   ];
 
+  const tabs = [
+    { label: "Base", icon: "far fa-paper-plane" },
+    { label: "Master", icon: "fas fa-shield-alt" },
+    { label: "Workers", icon: "fas fa-sitemap" },
+  ];
+  let active: number = 0;
+
   function onDeployHandler() {
     console.log(data);
   }
@@ -48,26 +53,38 @@
 {#if _theme === "bulma"}
   <form on:submit|preventDefault={onDeployHandler} class="box">
     <h4 class="is-size-4">Deploy a Kubernetes</h4>
-    <br />
 
-    <div class="box">
+    <div class="tabs is-centered is-boxed is-medium">
+      <ul>
+        {#each tabs as tab, index (tab.label)}
+          <li class={active === index ? "is-active" : ""}>
+            <a href="#!" on:click|preventDefault={() => (active = index)}>
+              <span class="icon is-small">
+                <i class={tab.icon} aria-hidden="true" />
+              </span>
+              <span>{tab.label}</span>
+            </a>
+          </li>
+        {/each}
+      </ul>
+    </div>
+
+    {#if active === 0}
+      <!-- Show Base Info -->
       {#each kubernetesFields as field (field.symbol)}
         <div class="field">
-          <label class="label" for={`${field.symbol}-${ID}`}>
-            {field.label}
-          </label>
+          <p class="label">{field.label}</p>
           <div class="control">
-            {#if !field.textarea}
-              <input
-                id={`${field.symbol}-${ID}`}
-                class="input"
-                type="text"
+            {#if field.textarea}
+              <textarea
+                class="textarea"
                 placeholder={field.placeholder}
                 bind:value={data[field.symbol]}
               />
             {:else}
-              <textarea
-                class="textarea"
+              <input
+                class="input"
+                type="text"
                 placeholder={field.placeholder}
                 bind:value={data[field.symbol]}
               />
@@ -75,54 +92,123 @@
           </div>
         </div>
       {/each}
-    </div>
+    {/if}
 
-    <!-- {#each data.workers as worker, wIdx}
-      <div class="box">
-        {#each baseFields as field}
-          <div class="field">
-            <label class="label" for={`${field.symbol}-${ID}`}>
-              {field.label}
-            </label>
+    {#if active === 1}
+      <!-- Show Master Info -->
+      {#each baseFields as field (field.symbol)}
+        <div class="field">
+          <p class="label">{field.label}</p>
+          <div class="control">
+            {#if field.type === "number"}
+              <input
+                class="input"
+                type="number"
+                placeholder={field.placeholder}
+                bind:value={data.master[field.symbol]}
+              />
+            {/if}
+
             {#if field.type === "checkbox"}
-              <label class="checkbox" for={`${field.symbol}-${ID}`}>
+              <label class="checkbox">
                 <input
                   type="checkbox"
-                  value={data.workers[wIdx][field.symbol]}
-                  on:change={() => {
-                    console.log(wIdx, data.workers[wIdx]);
-                    data.workers[wIdx][field.symbol] =
-                      !data.workers[wIdx][field.symbol];
-                  }}
-                  id={`${field.symbol}-${ID}`}
+                  value={data.master[field.symbol]}
+                  on:change={() =>
+                    (data.master[field.symbol] = !data.master[field.symbol])}
                 />
                 {field.label}
               </label>
-            {:else if field.type === "number"}
-              <div class="control">
-                <input
-                  id={`${field.symbol}-${ID}`}
-                  class="input"
-                  type="number"
-                  placeholder={field.placeholder}
-                  bind:value={data.workers[wIdx][field.symbol]}
-                />
-              </div>
-            {:else}
-              <div class="control">
-                <input
-                  id={`${field.symbol}-${ID}`}
-                  class="input"
-                  type="text"
-                  placeholder={field.placeholder}
-                  bind:value={data.workers[wIdx][field.symbol]}
-                />
-              </div>
             {/if}
+
+            {#if !field.type}
+              <input
+                class="input"
+                type="text"
+                placeholder={field.placeholder}
+                bind:value={data.master[field.symbol]}
+              />
+            {/if}
+          </div>
+        </div>
+      {/each}
+    {/if}
+
+    {#if active === 2}
+      <!-- Show Workers Info -->
+      <div class="actions" style="margin-bottom: 20px;">
+        <button
+          type="button"
+          class="button is-primary is-light"
+          on:click={() => (data.workers = [...data.workers, new Worker()])}
+        >
+          <span class="icon is-medium">
+            <i class="far fa-plus-square" />
+          </span>
+          <span>ADD Worker</span>
+        </button>
+      </div>
+      <div class="worker-container">
+        {#each data.workers as worker, index (worker.id)}
+          <div class="box">
+            <div class="worker-header">
+              <p class="is-size-5 has-text-weight-bold">{worker.name}</p>
+              {#if index}
+                <button
+                  type="button"
+                  class="button is-danger is-outlined"
+                  on:click={() =>
+                    (data.workers = data.workers.filter((_, i) => index !== i))}
+                >
+                  <span>Delete</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-times" />
+                  </span>
+                </button>
+              {:else}
+                <span class="tag is-info">Can't be removed.</span>
+              {/if}
+            </div>
+            {#each baseFields as field (field.symbol)}
+              <div class="field">
+                <p class="label">{field.label}</p>
+                <div class="control">
+                  {#if field.type === "number"}
+                    <input
+                      class="input"
+                      type="number"
+                      placeholder={field.placeholder}
+                      bind:value={worker[field.symbol]}
+                    />
+                  {/if}
+
+                  {#if field.type === "checkbox"}
+                    <label class="checkbox">
+                      <input
+                        type="checkbox"
+                        value={worker[field.symbol]}
+                        on:change={() =>
+                          (worker[field.symbol] = !worker[field.symbol])}
+                      />
+                      {field.label}
+                    </label>
+                  {/if}
+
+                  {#if !field.type}
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder={field.placeholder}
+                      bind:value={worker[field.symbol]}
+                    />
+                  {/if}
+                </div>
+              </div>
+            {/each}
           </div>
         {/each}
       </div>
-    {/each} -->
+    {/if}
 
     <div class="actions">
       <button class="button is-primary" type="submit"> Deploy </button>
@@ -131,10 +217,25 @@
 {/if}
 
 <style lang="scss" scoped>
-  @import "bulma/bulma.sass";
+  @import url("/assets/bulma.min.css");
+  // @import "bulma/bulma.sass";
 
-  .actions {
+  .worker-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 70vh;
+    will-change: transform;
+    padding-bottom: 5rem;
+    margin-bottom: 20px;
+  }
+
+  .actions,
+  .worker-header {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .worker-header {
+    justify-content: space-between;
   }
 </style>
