@@ -5,6 +5,7 @@
   import resolveTheme from "../../utils/resolveTheme";
   import Kubernetes, { Worker } from "../../types/kubernetes";
   import deployKubernetes from "../../utils/deployKubernetes";
+  import { events } from "grid3_client_ts";
 
   export let theme: IGlobalOptions["theme"];
   $: _theme = resolveTheme(theme);
@@ -29,6 +30,12 @@
   ];
 
   // prettier-ignore
+  const networkFields: IFormField[] = [
+    { label: "Network Name", symbol: "name", placeholder: "Your Network Name." },
+    { label: "Network IP Range", symbol: "ipRange", placeholder: "Your Network IP Range." },
+  ];
+
+  // prettier-ignore
   const baseFields: IFormField[] = [
     { label: "Name", symbol: "name", placeholder: "Enter name." },
     { label: "Node", symbol: "node", placeholder: "Node ID.", type: 'number' },
@@ -44,6 +51,7 @@
   const configFields: IFormField[] = [
     { label: "Twin ID", symbol: "twinId", placeholder: "Your Twin ID.", type: "number" },
     { label: "Proxy URL", symbol: "proxyURL", placeholder: "Your Proxy URL." },
+    { label: "URL", symbol: "url", placeholder: "Your substrate URL." },
     { label: "Mnemonics", symbol: "mnemonics", placeholder: "Your Mnemonics." },
   ];
 
@@ -59,11 +67,18 @@
   function onDeployKubernetes() {
     loading = true;
 
+    function onLogInfo(...args) {
+      console.log(args);
+    }
+
+    events.addListener("logs", onLogInfo);
+
     deployKubernetes(data)
       .then(console.log)
       .catch(console.log)
       .finally(() => {
         loading = false;
+        events.removeListener("logs", onLogInfo);
       });
   }
 </script>
@@ -107,6 +122,21 @@
                 bind:value={data[field.symbol]}
               />
             {/if}
+          </div>
+        </div>
+      {/each}
+
+      <!-- Network info -->
+      {#each networkFields as field (field.symbol)}
+        <div class="field">
+          <p class="label">{field.label}</p>
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              placeholder={field.placeholder}
+              bind:value={data.network[field.symbol]}
+            />
           </div>
         </div>
       {/each}

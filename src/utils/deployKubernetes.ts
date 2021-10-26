@@ -9,15 +9,18 @@ import {
 
 export default function deployKubernetes(data: Kubernetes) {
   /* Extract Data */
-  const { configs, master, workers, ...base } = data;
+  const { configs, master, workers, network: nw, ...base } = data;
   const { secret, sshKey, description, metadata, name } = base;
-  const { twinId, proxyURL, mnemonics } = configs;
+  const { twinId, proxyURL, mnemonics, url } = configs;
 
   const http = new HTTPMessageBusClient(twinId, proxyURL);
-  const network = new NetworkModel();
-  const grid = new GridClient(twinId, proxyURL, mnemonics, http, name);
+  const grid = new GridClient(twinId, url, mnemonics, http, name);
   const masterNodes = [createNode(master)];
   const workerNodes = workers.map(createNode);
+
+  const network = new NetworkModel();
+  network.name = nw.name;
+  network.ip_range = nw.ipRange;
 
   const k8s = new K8SModel();
   k8s.name = name;

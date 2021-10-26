@@ -32,8 +32,8 @@ const sourceMapsInProduction = false;
 /**********                                             Webpack                                             **********/
 /*********************************************************************************************************************/
 
-import Webpack from "webpack";
-import WebpackDev from "webpack-dev-server";
+import type Webpack from "webpack";
+import type WebpackDev from "webpack-dev-server";
 import SveltePreprocess from "svelte-preprocess";
 import Autoprefixer from "autoprefixer";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -149,12 +149,12 @@ const config: Configuration = {
       },
     ],
   },
-  devServer: {
-    hot: true,
-    stats: "errors-only",
-    contentBase: "public",
-    watchContentBase: true,
-  },
+  // devServer: {
+  //   hot: true,
+  //   stats: "errors-only",
+  //   contentBase: "public",
+  //   watchContentBase: true,
+  // },
   target: isDevelopment ? "web" : "browserslist",
   // externals: {
   // 	fs: "commonjs fs"

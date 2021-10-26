@@ -3,7 +3,8 @@ import isValidInteger from "../utils/isValidInteger";
 export default class BaseConfig {
   public constructor(
     public twinId: number = 0,
-    public proxyURL: string = "",
+    public url: string = "",
+    public proxyURL: string = "https://rmbproxy1.devnet.grid.tf",
     public mnemonics: string = ""
   ) {}
 
