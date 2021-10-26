@@ -45,10 +45,6 @@
   }
 </script>
 
-<div style="position: fixed;">
-  {JSON.stringify(data)}
-</div>
-
 {#if _theme === "bulma"}
   <form on:submit|preventDefault={onDeployHandler} class="box">
     <h4 class="is-size-4">Deploy a Kubernetes</h4>
@@ -81,7 +77,7 @@
       {/each}
     </div>
 
-    {#each data.workers as worker, wIdx}
+    <!-- {#each data.workers as worker, wIdx}
       <div class="box">
         {#each baseFields as field}
           <div class="field">
@@ -121,13 +117,12 @@
                   placeholder={field.placeholder}
                   bind:value={data.workers[wIdx][field.symbol]}
                 />
-                <!-- bind:value={data[field.symbol]} -->
               </div>
             {/if}
           </div>
         {/each}
       </div>
-    {/each}
+    {/each} -->
 
     <div class="actions">
       <button class="button is-primary" type="submit"> Deploy </button>
