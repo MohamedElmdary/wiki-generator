@@ -4,6 +4,7 @@
   import type { IGlobalOptions } from "../../types";
   import resolveTheme from "../../utils/resolveTheme";
   import Kubernetes, { Worker } from "../../types/kubernetes";
+  import deployKubernetes from "../../utils/deployKubernetes";
 
   export let theme: IGlobalOptions["theme"];
   $: _theme = resolveTheme(theme);
@@ -20,6 +21,7 @@
 
   // prettier-ignore
   const kubernetesFields: IFormField[] = [
+    { label: "Name", symbol: "name", placeholder: "Your K8S Name." },
     { label: "Secret", symbol: "secret", placeholder: "Your Secret." },
     { label: "SSH Key", symbol: "sshKey", placeholder: "Your SSH Key." },
     { label: "Metadata", symbol: "metadata", placeholder: "Your Metadata." },
@@ -38,20 +40,36 @@
     { label: "Plantery", symbol: "plantery", placeholder: "", type: 'checkbox' },
   ];
 
+  // prettier-ignore
+  const configFields: IFormField[] = [
+    { label: "Twin ID", symbol: "twinId", placeholder: "Your Twin ID.", type: "number" },
+    { label: "Proxy URL", symbol: "proxyURL", placeholder: "Your Proxy URL." },
+    { label: "Mnemonics", symbol: "mnemonics", placeholder: "Your Mnemonics." },
+  ];
+
   const tabs = [
     { label: "Base", icon: "far fa-paper-plane" },
     { label: "Master", icon: "fas fa-shield-alt" },
     { label: "Workers", icon: "fas fa-sitemap" },
+    { label: "Configs", icon: "fas fa-cogs" },
   ];
   let active: number = 0;
+  let loading = false;
 
-  function onDeployHandler() {
-    console.log(data);
+  function onDeployKubernetes() {
+    loading = true;
+
+    deployKubernetes(data)
+      .then(console.log)
+      .catch(console.log)
+      .finally(() => {
+        loading = false;
+      });
   }
 </script>
 
 {#if _theme === "bulma"}
-  <form on:submit|preventDefault={onDeployHandler} class="box">
+  <form on:submit|preventDefault={onDeployKubernetes} class="box">
     <h4 class="is-size-4">Deploy a Kubernetes</h4>
 
     <div class="tabs is-centered is-boxed is-medium">
@@ -153,21 +171,17 @@
           <div class="box">
             <div class="worker-header">
               <p class="is-size-5 has-text-weight-bold">{worker.name}</p>
-              {#if index}
-                <button
-                  type="button"
-                  class="button is-danger is-outlined"
-                  on:click={() =>
-                    (data.workers = data.workers.filter((_, i) => index !== i))}
-                >
-                  <span>Delete</span>
-                  <span class="icon is-small">
-                    <i class="fas fa-times" />
-                  </span>
-                </button>
-              {:else}
-                <span class="tag is-info">Can't be removed.</span>
-              {/if}
+              <button
+                type="button"
+                class="button is-danger is-outlined"
+                on:click={() =>
+                  (data.workers = data.workers.filter((_, i) => index !== i))}
+              >
+                <span>Delete</span>
+                <span class="icon is-small">
+                  <i class="fas fa-times" />
+                </span>
+              </button>
             </div>
             {#each baseFields as field (field.symbol)}
               <div class="field">
@@ -210,8 +224,39 @@
       </div>
     {/if}
 
+    {#if active === 3}
+      {#each configFields as field (field.symbol)}
+        <div class="field">
+          <p class="label">{field.label}</p>
+          <div class="control">
+            {#if field.type === "number"}
+              <input
+                class="input"
+                type="number"
+                placeholder={field.placeholder}
+                bind:value={data.configs[field.symbol]}
+              />
+            {:else}
+              <input
+                class="input"
+                type="text"
+                placeholder={field.placeholder}
+                bind:value={data.configs[field.symbol]}
+              />
+            {/if}
+          </div>
+        </div>
+      {/each}
+    {/if}
+
     <div class="actions">
-      <button class="button is-primary" type="submit"> Deploy </button>
+      <button
+        class={"button is-primary " + (loading ? "is-loading" : "")}
+        type="submit"
+        disabled={loading || !data.valid}
+      >
+        Deploy
+      </button>
     </div>
   </form>
 {/if}
