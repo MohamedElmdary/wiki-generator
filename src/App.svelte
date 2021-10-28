@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Kubernetes from "./elements/kubernetes/Kubernetes.wc.svelte";
+  import Button from "./elements/button/Button.wc.svelte";
 </script>
 
-<Kubernetes theme={"bulma"} />
+<Button primary preicon="fas fa-check" outlined>Bulma Button</Button>
