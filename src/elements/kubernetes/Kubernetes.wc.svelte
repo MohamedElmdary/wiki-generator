@@ -64,11 +64,14 @@
   let active: number = 0;
   let loading = false;
 
+  let message: string;
   function onDeployKubernetes() {
     loading = true;
 
-    function onLogInfo(...args) {
-      console.log(args);
+    function onLogInfo(msg: string) {
+      if (typeof msg === "string") {
+        message = msg;
+      }
     }
 
     events.addListener("logs", onLogInfo);
@@ -280,6 +283,11 @@
     {/if}
 
     <div class="actions">
+      {#if loading}
+        <div class="mr-5">
+          *{message}.
+        </div>
+      {/if}
       <button
         class={"button is-primary " + (loading ? "is-loading" : "")}
         type="submit"
@@ -308,6 +316,7 @@
   .worker-header {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
   }
 
   .worker-header {
