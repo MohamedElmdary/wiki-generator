@@ -1,6 +1,5 @@
 export interface IGlobalOptions {
   title?: string;
-  theme?: "default" | "bulma";
   sidenav?: string | boolean;
 }
 
@@ -11,3 +10,11 @@ export interface ISidenavRoute {
   disabled?: boolean;
   children?: ISidenavRoute[];
 }
+
+export type Colors =
+  | "primary"
+  | "link"
+  | "info"
+  | "success"
+  | "warning"
+  | "danger";
