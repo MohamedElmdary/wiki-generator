@@ -1,6 +1,7 @@
 <script lang="ts">
   import Notification from "./elements/notification/Notification.wc.svelte";
   import Button from "./elements/button/Button.wc.svelte";
+  import K from "./elements/kubernetes/Kubernetes.wc.svelte";
 </script>
 
 <Notification deletable color="danger">
@@ -11,3 +12,4 @@
 </Notification>
 
 <Button color="primary" light>Hello world</Button>
+<K />
