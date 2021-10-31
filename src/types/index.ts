@@ -18,3 +18,11 @@ export type Colors =
   | "success"
   | "warning"
   | "danger";
+
+export interface IFormField {
+  label: string;
+  placeholder?: string;
+  symbol: string;
+  textarea?: boolean;
+  type?: "text" | "number" | "checkbox";
+}

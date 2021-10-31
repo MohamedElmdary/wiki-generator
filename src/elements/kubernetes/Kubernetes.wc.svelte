@@ -4,15 +4,9 @@
   import Kubernetes, { Worker } from "../../types/kubernetes";
   import deployKubernetes from "../../utils/deployKubernetes";
   import { events } from "grid3_client_ts";
+  import type { IFormField } from "../../types";
 
   const data = new Kubernetes();
-  interface IFormField {
-    label: string;
-    placeholder?: string;
-    symbol: string;
-    textarea?: boolean;
-    type?: "text" | "number" | "checkbox";
-  }
 
   // prettier-ignore
   const kubernetesFields: IFormField[] = [
