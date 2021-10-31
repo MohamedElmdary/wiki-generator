@@ -2,6 +2,14 @@
   import Notification from "./elements/notification/Notification.wc.svelte";
   import Button from "./elements/button/Button.wc.svelte";
   import K from "./elements/kubernetes/Kubernetes.wc.svelte";
+
+  import markdownParser from "./utils/markdownParser";
+
+  fetch("/seed.md")
+    .then((res) => res.text())
+    .then(markdownParser)
+    .then(console.log)
+    .catch(console.error);
 </script>
 
 <Notification deletable color="danger">
