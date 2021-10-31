@@ -1,5 +1,6 @@
 <script lang="ts">
   import Notification from "./elements/notification/Notification.wc.svelte";
+  import Button from "./elements/button/Button.wc.svelte";
 </script>
 
 <Notification deletable color="danger">
@@ -8,3 +9,5 @@
   deleniti aliquid <strong> voluptatum sequi</strong>, eveniet, iste officiis
   asperiores.
 </Notification>
+
+<Button color="primary" light>Hello world</Button>
