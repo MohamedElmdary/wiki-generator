@@ -1,11 +1,7 @@
 import type { default as Kubernetes, Base } from "../types/kubernetes";
 import { HTTPMessageBusClient } from "ts-rmb-http-client";
-import {
-  GridClient,
-  K8SModel,
-  KubernetesNodeModel,
-  NetworkModel,
-} from "grid3_client_ts";
+import { GridClient, K8SModel, KubernetesNodeModel } from "grid3_client_ts";
+import createNetwork from "./createNetwork";
 
 export default function deployKubernetes(data: Kubernetes) {
   /* Extract Data */
@@ -18,14 +14,10 @@ export default function deployKubernetes(data: Kubernetes) {
   const masterNodes = [createNode(master)];
   const workerNodes = workers.map(createNode);
 
-  const network = new NetworkModel();
-  network.name = nw.name;
-  network.ip_range = nw.ipRange;
-
   const k8s = new K8SModel();
   k8s.name = name;
   k8s.secret = secret;
-  k8s.network = network;
+  k8s.network = createNetwork(nw);
   k8s.masters = masterNodes;
   k8s.workers = workerNodes;
   k8s.metadata = metadata;

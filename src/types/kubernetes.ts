@@ -12,7 +12,7 @@ export abstract class Base {
     public publicIp: boolean = false,
     public memory: number = 0,
     public rootFsSize: number = 0,
-    public plantery: boolean = false
+    public plantery: boolean = true
   ) {}
 
   public get valid(): boolean {
@@ -36,6 +36,11 @@ export class Network {
     public name: string = "",
     public ipRange: string = "10.20.0.0/16"
   ) {}
+
+  public get valid(): boolean {
+    const { name, ipRange } = this;
+    return name !== "" && ipRange !== "";
+  }
 }
 
 export default class Kubernetes {
@@ -53,12 +58,13 @@ export default class Kubernetes {
   ) {}
 
   public get valid(): boolean {
-    const { secret, sshKey, master, workers, configs } = this;
+    const { secret, sshKey, master, workers, configs, network } = this;
     return (
       secret !== "" &&
       sshKey !== "" &&
       configs.valid &&
       master.valid &&
+      network.valid &&
       workers.reduce((res, w) => res && w.valid, true)
     );
   }

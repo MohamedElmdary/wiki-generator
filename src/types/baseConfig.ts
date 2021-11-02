@@ -9,7 +9,12 @@ export default class BaseConfig {
   ) {}
 
   public get valid(): boolean {
-    const { twinId, proxyURL, mnemonics } = this;
-    return proxyURL !== "" && mnemonics !== "" && isValidInteger(twinId);
+    const { twinId, proxyURL, mnemonics, url } = this;
+    return (
+      proxyURL !== "" &&
+      mnemonics !== "" &&
+      url !== "" &&
+      isValidInteger(twinId)
+    );
   }
 }

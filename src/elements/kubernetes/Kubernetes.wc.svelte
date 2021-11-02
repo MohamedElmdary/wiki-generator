@@ -151,7 +151,7 @@
             <label class="checkbox">
               <input
                 type="checkbox"
-                value={data.master[field.symbol]}
+                checked={data.master[field.symbol]}
                 on:change={() =>
                   (data.master[field.symbol] = !data.master[field.symbol])}
               />
@@ -220,7 +220,7 @@
                   <label class="checkbox">
                     <input
                       type="checkbox"
-                      value={worker[field.symbol]}
+                      checked={worker[field.symbol]}
                       on:change={() =>
                         (worker[field.symbol] = !worker[field.symbol])}
                     />
