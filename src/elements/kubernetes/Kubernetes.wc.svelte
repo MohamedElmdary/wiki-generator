@@ -49,7 +49,7 @@
     { label: "Workers", icon: "fas fa-sitemap" },
     { label: "Configs", icon: "fas fa-cogs" },
   ];
-  let active: number = 0;
+  let active: string = "Base";
   let loading = false;
 
   let message: string;
@@ -79,9 +79,9 @@
 
   <div class="tabs is-centered is-boxed is-medium">
     <ul>
-      {#each tabs as tab, index (tab.label)}
-        <li class={active === index ? "is-active" : ""}>
-          <a href="#!" on:click|preventDefault={() => (active = index)}>
+      {#each tabs as tab (tab.label)}
+        <li class={active === tab.label ? "is-active" : ""}>
+          <a href="#!" on:click|preventDefault={() => (active = tab.label)}>
             <span class="icon is-small">
               <i class={tab.icon} aria-hidden="true" />
             </span>
@@ -92,7 +92,7 @@
     </ul>
   </div>
 
-  {#if active === 0}
+  {#if active === "Base"}
     <!-- Show Base Info -->
     {#each kubernetesFields as field (field.symbol)}
       <div class="field">
@@ -132,7 +132,7 @@
     {/each}
   {/if}
 
-  {#if active === 1}
+  {#if active === "Master"}
     <!-- Show Master Info -->
     {#each baseFields as field (field.symbol)}
       <div class="field">
@@ -172,7 +172,7 @@
     {/each}
   {/if}
 
-  {#if active === 2}
+  {#if active === "Workers"}
     <!-- Show Workers Info -->
     <div class="actions" style="margin-bottom: 20px;">
       <button
@@ -244,7 +244,7 @@
     </div>
   {/if}
 
-  {#if active === 3}
+  {#if active === "Configs"}
     {#each configFields as field (field.symbol)}
       <div class="field">
         <p class="label">{field.label}</p>

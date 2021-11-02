@@ -84,7 +84,7 @@
 
   <div class="tabs is-centered is-boxed is-medium">
     <ul>
-      {#each tabs as tab, index (tab.label)}
+      {#each tabs as tab (tab.label)}
         <li class={active === tab.label ? "is-active" : ""}>
           <a href="#!" on:click|preventDefault={() => (active = tab.label)}>
             <span class="icon is-small">
