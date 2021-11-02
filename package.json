@@ -48,7 +48,7 @@
   "dependencies": {
     "bulma": "^0.9.3",
     "front-matter": "^4.0.2",
-    "grid3_client_ts": "git+https://github.com/threefoldtech/grid3_client_ts.git#development",
+    "grid3_client": "^0.0.9",
     "js-yaml": "^4.1.0",
     "marked": "^3.0.8",
     "sirv-cli": "^1.0.0",

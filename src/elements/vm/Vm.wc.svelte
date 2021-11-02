@@ -3,7 +3,7 @@
 <script lang="ts">
   import VM, { Disk, Env } from "../../types/vm";
   import type { IFormField } from "../../types";
-  import { events } from "grid3_client_ts";
+  import { events } from "grid3_client";
   import deployVM from "../../utils/deployVM";
 
   const data = new VM();
@@ -51,7 +51,6 @@
 
   // prettier-ignore
   const configFields: IFormField[] = [
-    { label: "Twin ID", symbol: "twinId", placeholder: "Your Twin ID.", type: "number" },
     { label: "Proxy URL", symbol: "proxyURL", placeholder: "Your Proxy URL." },
     { label: "URL", symbol: "url", placeholder: "Your substrate URL." },
     { label: "Mnemonics", symbol: "mnemonics", placeholder: "Your Mnemonics." },

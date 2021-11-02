@@ -3,7 +3,7 @@
 <script lang="ts">
   import Kubernetes, { Worker } from "../../types/kubernetes";
   import deployKubernetes from "../../utils/deployKubernetes";
-  import { events } from "grid3_client_ts";
+  import { events } from "grid3_client";
   import type { IFormField } from "../../types";
 
   const data = new Kubernetes();
@@ -37,7 +37,6 @@
 
   // prettier-ignore
   const configFields: IFormField[] = [
-    { label: "Twin ID", symbol: "twinId", placeholder: "Your Twin ID.", type: "number" },
     { label: "Proxy URL", symbol: "proxyURL", placeholder: "Your Proxy URL." },
     { label: "URL", symbol: "url", placeholder: "Your substrate URL." },
     { label: "Mnemonics", symbol: "mnemonics", placeholder: "Your Mnemonics." },

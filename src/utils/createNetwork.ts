@@ -1,5 +1,5 @@
 import type { Network } from "../types/kubernetes";
-import { NetworkModel } from "grid3_client_ts";
+import { NetworkModel } from "grid3_client";
 
 export default function createNetwork(nw: Network): NetworkModel {
   const network = new NetworkModel();

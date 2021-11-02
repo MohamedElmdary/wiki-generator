@@ -1,5 +1,3 @@
-<svelte:options tag={null} />
-
 <script lang="ts">
   import type { Colors } from "../../types";
   import ifTrue from "../../utils/ifTrue";

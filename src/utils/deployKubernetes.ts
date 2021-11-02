@@ -1,16 +1,16 @@
 import type { default as Kubernetes, Base } from "../types/kubernetes";
 import { HTTPMessageBusClient } from "ts-rmb-http-client";
-import { GridClient, K8SModel, KubernetesNodeModel } from "grid3_client_ts";
+import { GridClient, K8SModel, KubernetesNodeModel } from "grid3_client";
 import createNetwork from "./createNetwork";
 
 export default function deployKubernetes(data: Kubernetes) {
   /* Extract Data */
   const { configs, master, workers, network: nw, ...base } = data;
   const { secret, sshKey, description, metadata, name } = base;
-  const { twinId, proxyURL, mnemonics, url } = configs;
+  const { proxyURL, mnemonics, url } = configs;
 
-  const http = new HTTPMessageBusClient(twinId, proxyURL);
-  const grid = new GridClient(twinId, url, mnemonics, http, name);
+  const http = new HTTPMessageBusClient(0, proxyURL);
+  const grid = new GridClient(url, mnemonics, http, name);
   const masterNodes = [createNode(master)];
   const workerNodes = workers.map(createNode);
 

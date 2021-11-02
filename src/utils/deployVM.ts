@@ -6,16 +6,16 @@ import {
   MachineModel,
   MachinesModel,
   GridClient,
-} from "grid3_client_ts";
+} from "grid3_client";
 
 export default function deployVM(data: VM) {
   const { configs, envs, disks, ...base } = data;
   const { name, flist, cpu, memory, entrypoint, network: nw } = base;
   const { publicIp, planetary, nodeId, rootFsSize } = base;
-  const { mnemonics, proxyURL, url, twinId } = configs;
+  const { mnemonics, proxyURL, url } = configs;
 
-  const http = new HTTPMessageBusClient(twinId, proxyURL);
-  const grid = new GridClient(twinId, url, mnemonics, http, name);
+  const http = new HTTPMessageBusClient(0, proxyURL);
+  const grid = new GridClient(url, mnemonics, http, name);
 
   const vm = new MachineModel();
   vm.name = name;
