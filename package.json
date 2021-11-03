@@ -19,6 +19,7 @@
     "@tsconfig/svelte": "^2.0.0",
     "@types/js-yaml": "^4.0.4",
     "@types/marked": "^3.0.2",
+    "@types/page": "^1.11.5",
     "@types/uuid": "^8.3.1",
     "autoprefixer": "^10.3.7",
     "clean-webpack-plugin": "^4.0.0",
@@ -51,6 +52,7 @@
     "grid3_client": "^0.0.9",
     "js-yaml": "^4.1.0",
     "marked": "^3.0.8",
+    "page": "^1.11.6",
     "sirv-cli": "^1.0.0",
     "ts-rmb-http-client": "^0.1.9",
     "uuid": "^8.3.2"
