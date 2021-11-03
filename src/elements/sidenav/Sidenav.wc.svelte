@@ -34,8 +34,8 @@
   <ul class="menu-list">
     {#each routes as route (route.label)}
       <li>
-        <!-- class={Math.random() > 0.5 ? "is-active" : ""} -->
         <a
+          class={Math.random() > 0.5 ? "is-active" : ""}
           href={route.to}
           on:click|preventDefault={onRoute.bind(undefined, route)}
         >
@@ -51,11 +51,9 @@
 {/if}
 
 <style scoped lang="scss">
-  // @import "bulma/sass/utilities/_all.sass";
-  // @import "bulma/sass/base/generic.sass";
-  // @import "bulma/sass/base/minireset.sass";
-  // @import "bulma/sass/components/menu.sass";
-  @import url("/assets/bulma.min.css");
+  @import "bulma/sass/utilities/_all.sass";
+  @import "bulma/sass/base/generic.sass";
+  @import "bulma/sass/components/menu.sass";
 
   .sidenav {
     position: fixed;
