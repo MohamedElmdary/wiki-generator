@@ -1,8 +1,11 @@
 <script lang="ts">
+  import DeployedList from "../elements/DeployedList/DeployedList.svelte";
   export let ctx: PageJS.Context;
-  $: {
-    console.log(ctx);
-  }
+  console.log(ctx);
+  import K from "../elements/kubernetes/Kubernetes.wc.svelte";
 </script>
 
-<h1>md viewer working! {ctx?.hash}</h1>
+<div style="padding: 20px;">
+  <!-- <DeployedList /> -->
+  <K />
+</div>

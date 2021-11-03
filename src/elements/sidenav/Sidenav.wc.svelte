@@ -51,9 +51,10 @@
 {/if}
 
 <style scoped lang="scss">
-  @import "bulma/sass/utilities/_all.sass";
-  @import "bulma/sass/base/generic.sass";
-  @import "bulma/sass/components/menu.sass";
+  // @import "bulma/sass/utilities/_all.sass";
+  // @import "bulma/sass/base/generic.sass";
+  // @import "bulma/sass/components/menu.sass";
+  @import url("/assets/bulma.min.css");
 
   .sidenav {
     position: fixed;
