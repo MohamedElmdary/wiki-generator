@@ -1,7 +1,8 @@
 import type { default as Kubernetes, Base } from "../types/kubernetes";
-import { HTTPMessageBusClient } from "ts-rmb-http-client";
-import { GridClient, K8SModel, KubernetesNodeModel } from "grid3_client";
 import createNetwork from "./createNetwork";
+const { HTTPMessageBusClient } = window.configs.client;
+const { GridClient, K8SModel, KubernetesNodeModel } =
+  window.configs.grid3_client;
 
 export default function deployKubernetes(data: Kubernetes) {
   /* Extract Data */

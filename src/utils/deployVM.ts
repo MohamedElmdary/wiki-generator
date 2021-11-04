@@ -1,12 +1,8 @@
 import type { default as VM, Disk, Env } from "../types/vm";
 import createNetwork from "./createNetwork";
-import { HTTPMessageBusClient } from "ts-rmb-http-client";
-import {
-  DiskModel,
-  MachineModel,
-  MachinesModel,
-  GridClient,
-} from "grid3_client";
+const { HTTPMessageBusClient } = window.configs.client;
+const { DiskModel, MachineModel, MachinesModel, GridClient } =
+  window.configs.grid3_client;
 
 export default function deployVM(data: VM) {
   const { configs, envs, disks, ...base } = data;
@@ -38,7 +34,7 @@ export default function deployVM(data: VM) {
   return grid.connect().then(() => grid.machines.deploy(vms));
 }
 
-function createDisk({ name, size, mountpoint }: Disk): DiskModel {
+function createDisk({ name, size, mountpoint }: Disk) {
   const disk = new DiskModel();
   disk.name = name;
   disk.size = size;

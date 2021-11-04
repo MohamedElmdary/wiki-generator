@@ -3,7 +3,7 @@
 <script lang="ts">
   import VM, { Disk, Env } from "../../types/vm";
   import type { IFormField } from "../../types";
-  import { events } from "grid3_client";
+  const { events } = window.configs.grid3_client;
   import deployVM from "../../utils/deployVM";
 
   const data = new VM();

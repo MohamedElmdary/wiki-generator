@@ -1,6 +1,6 @@
 import type BaseConfig from "./baseConfig";
-import { HTTPMessageBusClient } from "ts-rmb-http-client";
-import { GridClient } from "grid3_client";
+const { HTTPMessageBusClient } = window.configs.client;
+const { GridClient } = window.configs.grid3_client;
 
 interface IData {
   k8s?: any[];
@@ -9,7 +9,7 @@ interface IData {
 
 export default class DeployedList {
   private data: IData = {};
-  constructor(private readonly grid: GridClient) {}
+  constructor(private readonly grid: any) {}
 
   public get kubernetes(): IData["k8s"] {
     if (!this.data.k8s) {

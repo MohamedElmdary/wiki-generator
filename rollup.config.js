@@ -1,85 +1,81 @@
 import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
-import css from 'rollup-plugin-css-only';
-import json from '@rollup/plugin-json';
+import fs from 'fs';
+import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
 
-function serve() {
-	let server;
+/**
+ * 
+ * @param { {
+ * 	src: string,
+ * 	outdir: string,
+ * 	element?: boolean,
+ * 	keepCss?: boolean
+ * } } options 
+ */
+function build(options) {
+	options = {
+		element: false,
+		keepCss: false,
+		...options
+	};
 
-	function toExit() {
-		if (server) server.kill(0);
-	}
-
-	return {
-		writeBundle() {
-			if (server) return;
-			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
-				stdio: ['ignore', 'inherit', 'inherit'],
-				shell: true
-			});
-
-			process.on('SIGTERM', toExit);
-			process.on('exit', toExit);
+	const configs = {
+		input: options.src, // 'src/main.ts',
+		output: {
+			sourcemap: false,
+			format: 'iife',
+			name: 'app',
+			file: options.outdir // 'public/build/bundle.js'
+		},
+		plugins: [
+			svelte({
+				preprocess: sveltePreprocess({ sourceMap: !production }),
+				compilerOptions: {
+					dev: !production,
+					customElement: options.element,
+				}
+			}),
+			resolve({
+				browser: true,
+				dedupe: ['svelte']
+			}),
+			commonjs(),
+			typescript({
+				sourceMap: !production,
+				inlineSources: !production
+			}),
+			production && terser()
+		],
+		watch: {
+			clearScreen: false
 		}
 	};
+
+	return configs;
 }
 
-export default {
-	input: 'src/main.ts',
-	output: {
-		sourcemap: true,
-		format: 'iife',
-		name: 'app',
-		file: 'public/build/bundle.js'
-	},
-	plugins: [
-		svelte({
-			preprocess: sveltePreprocess({ sourceMap: !production }),
-			compilerOptions: {
-				// enable run-time checks when not in production
-				dev: !production
-			}
-		}),
-		// we'll extract any component CSS out into
-		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
-		json(),
+function buildElements() {
+	const dir = path.join(__dirname, 'src', 'elements');
+	const outDir = `${process.env.DOCS ? 'docs' : 'public'}/build/elements/`;
+	return fs
+	.readdirSync(dir)
+	.map(f => {
+		const name = f.replace(".wc.svelte", "").toLocaleLowerCase();
+		return build({
+			src: `src/elements/${f}/index.ts`,
+			outdir: outDir + `${name}.wc.js`,
+			element: true,
+			keepCss: true
+		});
+	});
+}
 
-		// If you have external dependencies installed from
-		// npm, you'll most likely need these plugins. In
-		// some cases you'll need additional configuration -
-		// consult the documentation for details:
-		// https://github.com/rollup/plugins/tree/master/packages/commonjs
-		resolve({
-			browser: true,
-			dedupe: ['svelte']
-		}),
-		commonjs(),
-		typescript({
-			sourceMap: !production,
-			inlineSources: !production
-		}),
 
-		// In dev mode, call `npm run start` once
-		// the bundle has been generated
-		!production && serve(),
 
-		// Watch the `public` directory and refresh the
-		// browser on changes when not in production
-		!production && livereload('public'),
-
-		// If we're building for production (npm run build
-		// instead of npm run dev), minify
-		production && terser()
-	],
-	watch: {
-		clearScreen: false
-	}
-};
+export default buildElements();
