@@ -10,7 +10,7 @@ export default function deployKubernetes(data: Kubernetes) {
   const { proxyURL, mnemonics, url } = configs;
 
   const http = new HTTPMessageBusClient(0, proxyURL);
-  const grid = new GridClient(url, mnemonics, http, name);
+  const grid = new GridClient(url, mnemonics, http);
   const masterNodes = [createNode(master)];
   const workerNodes = workers.map(createNode);
 
@@ -24,7 +24,7 @@ export default function deployKubernetes(data: Kubernetes) {
   k8s.description = description;
   k8s.ssh_key = sshKey;
 
-  return grid.k8s.deploy(k8s);
+  return grid.connect().then(() => grid.k8s.deploy(k8s));
 }
 
 function createNode(data: Base) {

@@ -35,7 +35,7 @@ export default function deployVM(data: VM) {
   vms.network = createNetwork(nw);
   vms.machines = [vm];
 
-  return grid.machines.deploy(vms);
+  return grid.connect().then(() => grid.machines.deploy(vms));
 }
 
 function createDisk({ name, size, mountpoint }: Disk): DiskModel {
