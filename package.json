@@ -6,7 +6,7 @@
     "build": "rollup -c",
     "build:docs": "DOCS=true sh build.sh",
     "build:docs:file": "DOCS=true rollup -c",
-    "dev": "rollup -c -w",
+    "dev": "rollup -c rollup.config.dev.js -w",
     "dev:webpack": "webpack serve",
     "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json"

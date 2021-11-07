@@ -3,7 +3,7 @@
 <script lang="ts">
   import VM, { Disk, Env } from "../../types/vm";
   import type { IFormField } from "../../types";
-  const { events } = window.configs.grid3_client;
+  const { events } = window.configs?.grid3_client ?? {};
   import deployVM from "../../utils/deployVM";
 
   const data = new VM();
@@ -284,7 +284,12 @@
 </form>
 
 <style lang="scss" scoped>
-  @import url("/assets/bulma.min.css");
+  @import "bulma/bulma.sass";
+
+  *:not(i) {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }
 
   .actions {
     display: flex;

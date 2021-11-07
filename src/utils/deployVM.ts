@@ -1,8 +1,8 @@
 import type { default as VM, Disk, Env } from "../types/vm";
 import createNetwork from "./createNetwork";
-const { HTTPMessageBusClient } = window.configs.client;
+const { HTTPMessageBusClient } = window.configs?.client ?? {};
 const { DiskModel, MachineModel, MachinesModel, GridClient } =
-  window.configs.grid3_client;
+  window.configs?.grid3_client ?? {};
 
 export default function deployVM(data: VM) {
   const { configs, envs, disks, ...base } = data;

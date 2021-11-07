@@ -63,8 +63,9 @@ function build(options) {
 function buildElements() {
 	const dir = path.join(__dirname, 'src', 'elements');
 	const outDir = `${process.env.DOCS ? 'docs' : 'public'}/build/elements/`;
-	return fs
-	.readdirSync(dir)
+	// return fs
+	// .readdirSync(dir)
+	return ['vm']
 	.map(f => {
 		const name = f.replace(".wc.svelte", "").toLocaleLowerCase();
 		return build({
