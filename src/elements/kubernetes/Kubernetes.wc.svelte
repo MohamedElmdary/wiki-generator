@@ -3,7 +3,7 @@
 <script lang="ts">
   import Kubernetes, { Worker } from "../../types/kubernetes";
   import deployKubernetes from "../../utils/deployKubernetes";
-  const { events } = window.configs.grid3_client;
+  const { events } = window.configs?.grid3_client ?? {};
   import type { IFormField } from "../../types";
 
   const data = new Kubernetes();
@@ -285,7 +285,8 @@
 </form>
 
 <style lang="scss" scoped>
-  @import "bulma/bulma.sass";
+  @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
+  @import url("https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css");
 
   .worker-container {
     overflow-x: hidden;
